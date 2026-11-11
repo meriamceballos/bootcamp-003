@@ -1,1 +1,97 @@
-Java use only
+# [ADR-0001] Modernizacion gradual mediante Strangler Fig y arquitectura basada en APIs
+
+* **Estado:** Propuesto
+* **Decisores:** Equipo del caso practico / Arquitectura
+* **Stakeholders:** Desarrollo, Arquitectura, DevSecOps, Operaciones y Seguridad
+* **Fecha:** 2026-11-11
+
+---
+
+## 1. Contexto y Declaracion del Problema
+
+El caso practico requiere modernizar una aplicacion o servicio existente hacia una arquitectura mas flexible, desacoplada y basada en APIs.
+
+El principal problema es determinar como realizar esta modernizacion sin reemplazar todo el sistema actual de una sola vez, ya que esto incrementaria el riesgo, requeriria un esfuerzo considerable de desarrollo y haria mas compleja la transicion.
+
+Por este motivo se requiere un enfoque que permita:
+
+Mantener funcionando la solucion actual mientras se desarrolla la nueva.
+Migrar funcionalidades gradualmente.
+Exponer las nuevas capacidades mediante APIs.
+Controlar desde un punto central el acceso y enrutamiento de las APIs.
+Probar cada componente antes de retirar la funcionalidad anterior.
+Reducir progresivamente la deuda tecnologica.
+
+Este enfoque tambien resulta consistente con objetivos internos de reutilizacion de codigo y orientacion hacia servicios/APIs para la creacion de productos digitales.
+
+---
+
+## 2. Opciones Consideradas
+
+Enumere las alternativas tecnicas o de arquitectura evaluadas para resolver el problema:
+
+* **Opcion 1:** Strangler Fig Pattern. Modernizar gradualmente el sistema, reemplazando funcionalidades especificas mediante nuevos servicios/APIs.
+* **Opcion 2:** Opcion 2: Big Bang Rewrite. Reescribir completamente la aplicacion y sustituir el sistema anterior en una unica liberacion.
+* **Opcion 3:** Mantener el sistema actual. Realizar unicamente ajustes sobre la solucion existente sin modificar significativamente su arquitectura.
+
+---
+
+## 3. Decision Tomada
+
+Decidimos seleccionar la Opcion 1: Strangler Fig Pattern, debido a que permite modernizar la solucion de forma gradual y controlada, manteniendo inicialmente la convivencia entre los componentes existentes y los nuevos.
+
+### Razones Principales de la Eleccion
+* Menor riesgo: se reemplaza una funcionalidad a la vez en lugar de cambiar todo el sistema.
+* Continuidad: la aplicacion anterior puede continuar funcionando mientras se construyen las nuevas APIs.
+* Control mediante Kong: las peticiones pueden dirigirse hacia la funcionalidad existente o hacia los nuevos servicios segun avance la migracion.
+* Rollback mas sencillo: si un nuevo servicio presenta problemas, el impacto puede limitarse a esa funcionalidad.
+* Desacoplamiento: ayuda a separar gradualmente funcionalidades del sistema original.
+* Reduccion progresiva de deuda tecnica: las partes antiguas pueden retirarse conforme sean reemplazadas.
+
+---
+
+## 4. Analisis Comparativo de Opciones (Pros y Contras)
+
+### Opcion 1: [Nombre de la Opcion 1]
+
+* **Ventajas:**
+  * Permite una migracion incremental.
+  * Reduce el riesgo de una afectacion general.
+  * El sistema anterior y el nuevo pueden convivir temporalmente.
+  * Permite probar y liberar funcionalidades individualmente.
+  * Facilita rollback ante problemas.
+  * El progreso puede demostrarse mediante entregas pequeñas.
+  * Facilita retirar gradualmente componentes legacy.
+
+* **Desventajas:**
+  * Durante un periodo existiran dos soluciones conviviendo.
+  * Se requiere controlar correctamente el enrutamiento.
+  * La arquitectura sera temporalmente mas compleja.
+  * Es necesario definir claramente cuando retirar cada componente anterior.
+
+### Opcion 2: [Nombre de la Opcion 2]
+
+* **Ventajas:**
+  * [Pros / Puntos fuertes]
+* **Desventajas:**
+  * [Contras / Riesgos asociados]
+
+---
+
+## 5. Consecuencias e Impacto
+
+Describa los efectos esperados tras la aplicacion de esta decision en el proyecto a corto y largo plazo:
+
+### Positivas (Beneficios)
+* Mejora en la mantenibilidad, escalabilidad o seguridad del sistema.
+* Reduccion de deuda tecnica en la base de codigo.
+
+### Negativas / Riesgos (Compromisos)
+* Incremento inicial en el tiempo de desarrollo o complejidad operativa.
+* Requisito de capacitacion tecnica previa para el equipo de trabajo.
+
+---
+
+## 6. Referencias y Enlaces
+
+* Repositorio utilizado durante el Bootcamp: https://github.com/bootcamp-att/bootcamp-003. Esta registrado en Bootcamp junto con las practicas de Git, Pull Requests, ADR y Strangler Fig.
